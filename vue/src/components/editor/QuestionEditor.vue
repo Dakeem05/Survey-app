@@ -35,7 +35,7 @@ import {v4 as uuidv4 } from "uuid";
         dataChange();
     }
 
-    function removeOptions(op){
+    function removeOption(op){
         setOptions(getOptions().filter((opt) => opt !== op))
         dataChange();
     }
@@ -53,6 +53,13 @@ import {v4 as uuidv4 } from "uuid";
             delete data.data.options;
         }
         emit("change", data)
+    }
+    function addQuestion (){
+        emit("addQuestion", props.index + 1)
+    }
+
+    function deleteQuestion (){
+        emit("deleteQuestion", props.question)
     }
 </script>
 
