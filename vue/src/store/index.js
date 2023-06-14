@@ -213,10 +213,43 @@ const store = createStore({
             token:sessionStorage.getItem('TOKEN')
         },
         surveys:[...tmpSurveys],
+        currentSurvey:{
+            loading:false,
+            data:{}
+        },
         questionTypes:['text', 'select', 'radio', 'checkbox', 'textarea'],
     },
     getter:{},
     actions:{
+        getSurvey({commit}, id){
+            commit('setCurrentSurveyLoading', true);
+            return axiosClient.get(`survey/${id}`)
+                    .then((res)=>{
+                        commit("setCurrentSurvey", res.data);
+                        commit('setCurrentSurveyLoading', false)
+                    })
+                    .catch((err)=>{
+                        commit('setCurrentSurveyLoading', false);
+                        throw err
+                    })
+        },
+        saveSurvey({commit}, survey){
+            
+            delete survey.image_url;
+            let response;
+            if(survey.id){
+                response = axiosClient.put(`/survey/${survey.id}`, survey).then((res)=>{
+                        commit("updateSurvey", res.data);
+                        return res;
+                    })
+            } else {
+                response = axiosClient.post('/survey', survey).then((res)=>{
+                    commit("saveSurvey", res.data);
+                    return res;
+                })
+            }
+            return response;
+        },
         register({commit}, user){
             return axiosClient.post("/register", user)
             .then(({data}) =>{
@@ -240,6 +273,23 @@ const store = createStore({
         }
     },
     mutations:{
+        setCurrentSurveyLoading:(state, loading)=>{
+            state.currentSurvey.loading = loading;
+        },
+        setCurrentSurvey:(state, survey)=>{
+            state.currentSurvey.data = survey.data;
+        },
+        saveSurvey:(state, survey)=>{
+            state.surveys = [...state.surveys, survey.data];
+        },
+        updateSurvey:(state, survey)=>{
+            state.surveys = state.surveys.map((s)=>{
+                if(s.id === survey.data.id){
+                    return survey.data;
+                } 
+                return s;   
+            })
+        },
         logout: (state) => {
             state.user.data ={};
             state.user.token = null
