@@ -1,8 +1,8 @@
 <template>
     <fieldset class="mb-4">
         <div>
-            <legend class="text-base font-medium tex-gray-900">
-                
+            <legend class="text-base font-medium text-gray-900">
+
             </legend>
         </div>
     </fieldset>
