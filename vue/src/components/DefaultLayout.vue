@@ -78,6 +78,7 @@
       <router-view>
         
       </router-view>
+      <Notification/>
     </div>
   </template>
   
@@ -87,6 +88,7 @@
   import { useStore } from 'vuex';
   import { computed } from 'vue';
   import {useRouter} from "vue-router"
+  import Notification from './Notification.vue';
 
   const navigation = [
     { name: 'Dashboard', to:{name:"Dashboard"}},
@@ -103,8 +105,8 @@
       MenuItems,
       BellIcon,
       Bars3Icon,
-      XMarkIcon
-    
+      XMarkIcon,
+      Notification
     },
     setup(){
       
