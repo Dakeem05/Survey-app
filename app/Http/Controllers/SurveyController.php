@@ -112,7 +112,7 @@ class SurveyController extends Controller
             $relativePath = $this->saveImage($data['image']);
             $data['image'] = $relativePath;
         }
-
+        
         if($survey->image){
             $absolutePath = public_path($survey->image);
             File::delete($absolutePath);
